@@ -22,6 +22,19 @@ const connectDB = async (): Promise<void> => {
         const conn = await mongoose.connect(url);
         console.log(`MongoDB connected: ${conn.connection.host}`);
 
+
+        // aqui va el usuario creado
+        // const saltRounds = 10;
+        // const hasehdPassword = await bcrypt.hash('admin', saltRounds);
+        // const newAuth = new Auth({
+        //     username: 'Miguel',
+        //     password: hasehdPassword
+        // })
+        // await newAuth.save()
+        // console.log('New User created');
+       // mongoose.connection.close();
+
+
        
         await Booking.insertMany(bookingSeed);
         await Contact.insertMany(contactSeed);
