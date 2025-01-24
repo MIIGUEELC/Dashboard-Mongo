@@ -1,6 +1,6 @@
 import express, { Response, Request,NextFunction } from "express";
 import dotenv from 'dotenv';
-import cors from 'cors';  // <-- Importamos CORS
+import cors from 'cors';  
 import authRoutes from './routes/authRoutes'
 import protectedRoutes from './routes/protectedRoutes'
 import publicRouter from "./routes/publicRoutes";
@@ -13,14 +13,15 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
 app.use(express.json());
 
 // Habilitar CORS
-app.use(cors({  
-    origin: '*',  // Permite todas las peticiones 
-    credentials: true,  
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
-    allowedHeaders: ['Content-Type', 'Authorization'],  
+app.use(cors({
+    origin: 'http://localhost:5500',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Solucionar problemas con preflight requests (CORS y Passport)
@@ -35,7 +36,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Rutas de la API
 app.use('/api', publicRouter);
 app.use('/api/auth', authRoutes);
-app.use('/api/protected', protectedRoutes);
+app.use('/api', protectedRoutes);
 
 app.use('/', (req: Request, res: Response) => {
     res.json({ message: `Bienvenidos a hotel_miranda` });

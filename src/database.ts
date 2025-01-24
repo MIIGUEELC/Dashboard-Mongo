@@ -23,7 +23,7 @@ const connectDB = async (): Promise<void> => {
         console.log(`MongoDB connected: ${conn.connection.host}`);
 
 
-        // aqui va el usuario creado
+    // Creacion de usuario con hash
         // const saltRounds = 10;
         // const hasehdPassword = await bcrypt.hash('admin', saltRounds);
         // const newAuth = new Auth({
@@ -34,7 +34,7 @@ const connectDB = async (): Promise<void> => {
         // console.log('New User created');
        // mongoose.connection.close();
 
-
+       // Creating Faker datas using Faker on seed file
        
         await Booking.insertMany(bookingSeed);
         await Contact.insertMany(contactSeed);
