@@ -8,7 +8,6 @@ const secretKey = process.env.SECRET_KEY as string;
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    console.log('Token recibido:', token); 
 
     if (!token) {
         res.status(401).json({ message: 'Acces Denied, No token provided.' });
