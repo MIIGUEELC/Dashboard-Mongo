@@ -15,7 +15,7 @@ dotenv.config();
 
 
 const url = "mongodb+srv://miigueel9219:LVSEiCmwhZ2RDvTy@miguel.516oc.mongodb.net/Hotel_Miranda?retryWrites=true&w=majority&appName=Miguel";
-
+// cambiar la url a la .env
 
 const connectDB = async (): Promise<void> => {
     try {
