@@ -61,4 +61,4 @@ const createRandomContact = (): ContactTypeID => {
 export const bookingSeed = faker.helpers.multiple(createRandomBooking, { count: 10 });
 export const roomSeed = faker.helpers.multiple(createRandomRoom, { count: 10 });
 export const userSeed = faker.helpers.multiple(createRandomUser, { count: 10 });
-export const contactSeed = faker.helpers.multiple(createRandomContact, { count: 10 });
+export const contactSeed = faker.helpers.multiple(createRandomContact, { count: 10 });// genrea 10
