@@ -106,42 +106,41 @@
 // };
 
 // export default connectDB;
-
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
-import { RowDataPacket } from 'mysql2';
 
 dotenv.config();
 
-const dbConfig = {
-  host: 'localhost',
-  user: 'Miguel',
-  password: 'admin',
-  database: 'hotelmiranda',
+export const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'Miguel',
+    password: 'admin',
+    database: 'hotelmiranda',
+    waitForConnections: true,
+    connectionLimit: 10,  // Número máximo de conexiones en el pool
+    queueLimit: 0
+});
+
+export const connectDB = async (): Promise<void> => {
+    try {
+        // Obtener una conexión del pool
+        const connection = await pool.getConnection();
+        console.log(`MySQL connected: ${connection.config.host}`);
+
+        // Verificar la base de datos activa
+        const [rows] = await connection.execute('SELECT DATABASE();');
+        console.log(`Database in use: ${(rows as any)[0]['DATABASE()']}`);
+
+        // Liberar la conexión de vuelta al pool
+        connection.release();
+        console.log("Connection released successfully!");
+
+    } catch (error) {
+        console.error('Error connecting to MySQL:', error);
+        process.exit(1);
+    }
 };
 
-const connectDB = async (): Promise<void> => {
-  try {
-    // Conexión con la base de datos MySQL
-    const connection = await mysql.createConnection(dbConfig);
-    console.log(`MySQL connected: ${connection.config.host}`);
 
-    // Verificar el nombre de la base de datos conectada
-    const [rows] = await connection.execute('SELECT DATABASE();');
-    
-    // Especificamos el tipo correcto para los datos devueltos
-    const databaseName = (rows as RowDataPacket[])[0]['DATABASE()'];
-    console.log(`Database in use: ${databaseName}`);  
 
-    // Cerrar la conexión después de verificar
-    await connection.end();
-    console.log("Connection closed successfully!");
-
-  } catch (error) {
-    console.log('Error connecting to MySQL: ' + error);
-    process.exit(1);
-  }
-};
-
-export default connectDB;
 

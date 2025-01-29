@@ -1,10 +1,9 @@
 import express, { Response, Request, NextFunction } from "express";
 import dotenv from 'dotenv';
-
 import authRoutes from './routes/authRoutes';
 import protectedRoutes from './routes/protectedRoutes';
 import publicRouter from "./routes/publicRoutes";
-import connectDB from "./database"; // Ya usa MySQL
+import {connectDB} from "./database"; 
 
 const serverless = require('serverless-http');
 const PORT = process.env.PORT || 3001;
