@@ -1,45 +1,83 @@
-// import { faker } from '@faker-js/faker';
-// import { addBooking } from '../services/bookingService';
-// import { BookingTypeID } from '../interfaces/BookingType';
-// import { pool } from "../database";  // Asumimos que pool ya está configurado
+import { faker } from '@faker-js/faker';
+import { pool } from "../database";  
+import { RowDataPacket } from 'mysql2';
 
+// Contador global para los números de habitación
+let roomCounter = 1;
 
+// Función para obtener un usuario aleatorio de la base de datos
+const getRandomUserId = async (): Promise<string> => {
+    try {
+        const [rows] = await pool.execute('SELECT id FROM users LIMIT 1');  
+        if ((rows as RowDataPacket[]).length > 0) {
+            return (rows as RowDataPacket[])[0].id; 
+        }
+        throw new Error('No users found in the database');
+    } catch (error) {
+        throw new Error(`Error fetching random user ID: ${error}`);
+    }
+};
 
+// Función para obtener una habitación aleatoria de la base de datos
+const getRandomRoomId = async (): Promise<string> => {
+    try {
+        const [rows] = await pool.execute('SELECT id FROM rooms LIMIT 1'); 
+        if ((rows as RowDataPacket[]).length > 0) {
+            return (rows as RowDataPacket[])[0].id; 
+        }
+        throw new Error('No rooms found in the database');
+    } catch (error) {
+        throw new Error(`Error fetching random room ID: ${error}`);
+    }
+};
 
-// // Crear una reserva aleatoria
-// const createRandomBooking = (): BookingTypeID => {
-//     return {
-//         id: faker.string.uuid(),  // ID único para la reserva
-//         name: faker.person.firstName(),  // Nombre del cliente
-//         photo: faker.image.avatar(),  // Foto del cliente
-//         check_in: faker.date.future().toISOString().split('T')[0],  
-//         check_out: faker.date.future().toISOString().split('T')[0],  
-//         room: faker.number.int({ min: 1, max: 100 }),  // Número de habitación (relacionado con las habitaciones creadas)
-//         requests: faker.lorem.sentence(),  // Solicitudes especiales para la reserva
-//         booking_date: faker.date.past().toISOString().split('T')[0],  
-//         price: faker.number.int({ min: 100, max: 500 }),  // Precio de la reserva
-//         status: faker.helpers.arrayElement(['Paid', 'Refunded', 'Pending'])  // Estado de la reserva
-//     };
-// };
+// Crear una reserva aleatoria
+const createRandomBooking = async () => {
+    const bookingId = faker.string.uuid();  
+    console.log("Generated UUID for Booking:", bookingId);
 
-// // Función para agregar habitaciones primero
+    // Crear un nombre de habitación tipo "hab1", "hab2", etc.
+    const roomName = `hab${roomCounter}`;
+    roomCounter++;  
 
+    // Obtener un user_id y room_id aleatorios
+    const userId = await getRandomUserId(); 
+    const roomId = await getRandomRoomId();  
 
-// // Función para agregar reservas después de agregar las habitaciones
-// const seedBookings = async () => {
-//     await addRooms();  // Asegura que las habitaciones existan antes de agregar reservas
+    return {
+        id: bookingId, 
+        name: faker.person.firstName(), 
+        photo: faker.image.avatar(),  
+        check_in: faker.date.future().toISOString().split('T')[0], 
+        check_out: faker.date.future().toISOString().split('T')[0], 
+        room: roomId, 
+        requests: faker.lorem.sentence(),
+        booking_date: faker.date.past().toISOString().split('T')[0],  
+        price: faker.number.int({ min: 100, max: 500 }), 
+        status: faker.helpers.arrayElement(['Paid', 'Refunded', 'Pending']),  
+        user_id: userId  
+    };
+};
 
-//     const bookingSeed = faker.helpers.multiple(createRandomBooking, { count: 10 });
-    
-//     for (const booking of bookingSeed) {
-//         try {
-//             const bookingId = await addBooking(booking);  // Agregar la reserva a la base de datos
-//             console.log(`Booking created with ID: ${bookingId}`);
-//         } catch (error) {
-//             console.error(`Error creating booking: ${error}`);
-//         }
-//     }
-// };
+// Función para agregar reservas aleatorias a la base de datos
+const addBookings = async () => {
+    for (let i = 0; i < 10; i++) {  // Generar 10 reservas aleatorias
+        const booking = await createRandomBooking();  
 
-// // Ejecutar el seed
-// seedBookings();
+        try {
+            console.log("Inserting Booking with ID:", booking.id); 
+            
+            const [result] = await pool.execute(
+                `INSERT INTO bookings (id, name, photo, check_in, check_out, room, requests, booking_date, price, status, user_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [booking.id, booking.name, booking.photo, booking.check_in, booking.check_out, booking.room, booking.requests, booking.booking_date, booking.price, booking.status, booking.user_id]
+            );
+            console.log(`Booking added with ID: ${booking.id}`);
+        } catch (error) {
+            console.error(`Error creating booking: ${error}`);
+        }
+    }
+};
+
+// Ejecutar el seed
+addBookings();

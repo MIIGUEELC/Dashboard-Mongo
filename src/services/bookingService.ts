@@ -24,7 +24,6 @@
 //     return await Booking.findByIdAndDelete(id);
 // };
 
-
 import { BookingType, BookingTypeID } from "../interfaces/BookingType";
 import { pool } from "../database";  // Asegúrate de que 'connection' esté configurado en tu archivo de conexión de base de datos.
 import { v4 as uuidv4 } from 'uuid';
@@ -34,7 +33,13 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 export const fetchAllBookings = async (): Promise<BookingTypeID[]> => {
     try {
         const [rows] = await pool.execute<RowDataPacket[]>('SELECT * FROM bookings');
-        return rows as BookingTypeID[];
+        // Aseguramos que el tipo de datos devuelto sea adecuado, en este caso, un array de BookingTypeID
+        return rows.map(row => {
+            return {
+                ...row,
+                room: String(row.room), // Aseguramos que 'room' es un string
+            } as BookingTypeID;
+        });
     } catch (error) {
         throw new Error(`Error fetching bookings: ${error}`);
     }
@@ -44,7 +49,9 @@ export const fetchAllBookings = async (): Promise<BookingTypeID[]> => {
 export const fetchBookingById = async (id: string): Promise<BookingTypeID | null> => {
     try {
         const [rows] = await pool.execute<RowDataPacket[]>('SELECT * FROM bookings WHERE id = ?', [id]);
-        return rows.length > 0 ? (rows[0] as BookingTypeID) : null;
+        return rows.length > 0
+            ? { ...rows[0], room: String(rows[0].room) } as BookingTypeID  // Aseguramos que 'room' sea un string
+            : null;
     } catch (error) {
         throw new Error(`Error fetching booking: ${error}`);
     }
@@ -63,7 +70,7 @@ export const addBooking = async (data: BookingType): Promise<string> => {
                 data.photo,
                 data.check_in,
                 data.check_out,
-                data.room,
+                data.room,          // El campo 'room' ahora es un string
                 data.requests,
                 data.booking_date,
                 data.price,
@@ -87,7 +94,7 @@ export const editBooking = async (id: string, data: BookingTypeID): Promise<bool
                 data.photo,
                 data.check_in,
                 data.check_out,
-                data.room,
+                data.room,         // 'room' sigue siendo un string aquí
                 data.requests,
                 data.booking_date,
                 data.price,

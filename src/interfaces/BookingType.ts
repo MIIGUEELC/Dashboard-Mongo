@@ -3,7 +3,7 @@ export interface BookingType {
     photo: string;
     check_in: string;
     check_out: string;
-    room: number;
+    room: string; //cambio a string
     requests: string;
     booking_date: string;
     price: number;
