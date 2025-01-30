@@ -20,7 +20,7 @@ app.use(express.json());
 // Habilitar CORS
 app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'OPTIONS') {
-        res.sendStatus(200);  // Responder a las peticiones OPTIONS (preflight requests)
+        res.sendStatus(200);  
     } else {
         next();
     }
