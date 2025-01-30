@@ -34,3 +34,5 @@ export const deleteRoom = async (req: Request, res: Response) => {
     const rooms = await removeRoom(id);
     res.status(200).json(rooms);
 }
+
+

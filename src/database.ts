@@ -106,6 +106,7 @@
 // };
 
 // export default connectDB;
+
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 
@@ -117,7 +118,7 @@ export const pool = mysql.createPool({
     password: 'admin',
     database: 'hotelmiranda',
     waitForConnections: true,
-    connectionLimit: 10,  // Número máximo de conexiones en el pool
+    connectionLimit: 10,  
     queueLimit: 0
 });
 
