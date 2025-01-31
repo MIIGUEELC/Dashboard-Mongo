@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { pool } from "../database";  
 import { RowDataPacket } from 'mysql2';
 
-// Contador global para los números de habitación
+
 let roomCounter = 1;
 
 // Función para obtener un usuario aleatorio de la base de datos
@@ -36,11 +36,11 @@ const createRandomBooking = async () => {
     const bookingId = faker.string.uuid();  
     console.log("Generated UUID for Booking:", bookingId);
 
-    // Crear un nombre de habitación tipo "hab1", "hab2", etc.
+    // Crear un nombre de habitación como hab1 o hab2
     const roomName = `hab${roomCounter}`;
     roomCounter++;  
 
-    // Obtener un user_id y room_id aleatorios
+   
     const userId = await getRandomUserId(); 
     const roomId = await getRandomRoomId();  
 
@@ -61,7 +61,7 @@ const createRandomBooking = async () => {
 
 // Función para agregar reservas aleatorias a la base de datos
 const addBookings = async () => {
-    for (let i = 0; i < 10; i++) {  // Generar 10 reservas aleatorias
+    for (let i = 0; i < 10; i++) {  
         const booking = await createRandomBooking();  
 
         try {

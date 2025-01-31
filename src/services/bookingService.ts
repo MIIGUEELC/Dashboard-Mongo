@@ -1,31 +1,5 @@
-// import { BookingType, BookingTypeID } from "../interfaces/BookingType";
-// import Booking from "../models/bookingModel";
-// import { v4 as uuidv4 } from 'uuid'
-
-// export const fetchAllBookings = async () => {
-//     return await Booking.find();
-// };
-
-// export const fetchBookingById = async (id: string) => {
-//     return await Booking.findById(id);
-// };
-
-// export const addBooking = async (data: BookingType) => {
-//     const booking = { ...data, id: uuidv4() };
-//     const newBooking = new Booking(booking);
-//     return await newBooking.save();
-// };
-
-// export const editBooking = async (id: string, data: BookingTypeID) => {
-//     return await Booking.findByIdAndUpdate(id, data, { new: true });
-// };
-
-// export const removeBooking = async (id: string) => {
-//     return await Booking.findByIdAndDelete(id);
-// };
-
 import { BookingType, BookingTypeID } from "../interfaces/BookingType";
-import { pool } from "../database";  // Asegúrate de que 'connection' esté configurado en tu archivo de conexión de base de datos.
+import { pool } from "../database";  
 import { v4 as uuidv4 } from 'uuid';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
@@ -33,7 +7,7 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 export const fetchAllBookings = async (): Promise<BookingTypeID[]> => {
     try {
         const [rows] = await pool.execute<RowDataPacket[]>('SELECT * FROM bookings');
-        // Aseguramos que el tipo de datos devuelto sea adecuado, en este caso, un array de BookingTypeID
+       
         return rows.map(row => {
             return {
                 ...row,
@@ -70,7 +44,7 @@ export const addBooking = async (data: BookingType): Promise<string> => {
                 data.photo,
                 data.check_in,
                 data.check_out,
-                data.room,          // El campo 'room' ahora es un string
+                data.room,          
                 data.requests,
                 data.booking_date,
                 data.price,

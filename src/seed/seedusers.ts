@@ -13,14 +13,14 @@ const createRandomUser = () => {
         order_date: faker.date.past().toISOString().split('T')[0],  
         check_in: faker.date.future().toISOString().split('T')[0], 
         check_out: faker.date.future().toISOString().split('T')[0], 
-        room_type: faker.helpers.arrayElement(["Deluxe A-7", "Deluxe A-54", "Deluxe A-18", "Deluxe A-25"]), // Tipo de habitación aleatorio
-        status: faker.helpers.arrayElement(["Pending", "Paid", "Refunded"]),  // Estado aleatorio
+        room_type: faker.helpers.arrayElement(["Deluxe A-7", "Deluxe A-54", "Deluxe A-18", "Deluxe A-25"]), 
+        status: faker.helpers.arrayElement(["Pending", "Paid", "Refunded"]), 
     };
 };
 
 // Función para agregar usuarios aleatorios a la base de datos
 const addUsers = async () => {
-    for (let i = 0; i < 10; i++) {  // Generar 10 usuarios aleatorios
+    for (let i = 0; i < 10; i++) {  
         const user = createRandomUser();
 
         try {
