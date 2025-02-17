@@ -40,6 +40,8 @@ app.use('/', (req: Request, res: Response) => {
     res.json({ message: `Bienvenidos a hotel_miranda_sql` });
 });
 
+
+
 export const handler = serverless(app);
 
 app.listen(PORT, () => {
