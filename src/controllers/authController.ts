@@ -8,6 +8,8 @@ dotenv.config();
 
 const secretKey = process.env.SECRET_KEY as string;
 
+///cambiar todo esto a sql 
+
 export const login = async (req: Request, res: Response) => {
 
     const { username, password } = req.body;
