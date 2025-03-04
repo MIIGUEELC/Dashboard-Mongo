@@ -1,0 +1,22 @@
+org: migueloxygen
+app: api
+service: api
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: eu-west-3
+  stage: dev
+  environment:
+    MONGO_URI: "mongodb+srv://miigueel9219:LVSEiCmwhZ2RDvTy@miguel.516oc.mongodb.net/Hotel_Miranda?retryWrites=true&w=majority&appName=Miguel"
+
+functions:
+  api:
+    handler: src/app.handler
+    events:
+      - httpApi: "*"
+      
+package:
+  exclude:
+    - node_modules/@mapbox/node-pre-gyp/lib/util/nw-pre-gyp/index.html
+    - node_modules/@mapbox/node-pre-gyp/lib/util/*.html

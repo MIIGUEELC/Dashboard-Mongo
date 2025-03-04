@@ -50,6 +50,6 @@ export const handler = serverless(app);
 
 
 
-app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`http://localhost:${PORT}`);
+// });
