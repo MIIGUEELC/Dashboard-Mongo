@@ -1,4 +1,4 @@
-org: migueloxygen
+org: 
 app: api
 service: api
 
@@ -9,7 +9,7 @@ provider:
   stage: dev
   environment:
     MONGO_URI: "mongodb+srv://miigueel9219:LVSEiCmwhZ2RDvTy@miguel.516oc.mongodb.net/Hotel_Miranda?retryWrites=true&w=majority&appName=Miguel"
-
+    SECRET_KEY: "admin"
 functions:
   api:
     handler: src/app.handler

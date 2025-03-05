@@ -119,7 +119,6 @@ export const getHotelInfo = (req: Request, res: Response) => {
                 {
                     method: 'PUT',
                     path: '/api/protected/users/:id',
-                    description: 'Update an existing user by ID',
                     body: 'customerName, roomNumber, checkInDate, checkOutDate'
                 },
                 {
